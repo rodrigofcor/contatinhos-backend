@@ -1,0 +1,25 @@
+{
+  "name": "contatinhos-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "node --watch --no-warnings server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rodrigofcor/contatinhos-backend.git"
+  },
+  "author": "Rodrigo Fagundes Coruja",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rodrigofcor/contatinhos-backend/issues"
+  },
+  "homepage": "https://github.com/rodrigofcor/contatinhos-backend#readme",
+  "dependencies": {
+    "fastify": "^4.24.3"
+  }
+}
