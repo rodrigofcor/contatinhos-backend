@@ -6,8 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "dev": "node --watch --no-warnings server.js"
+    "dev": "tsx watch src/server.ts",
+    "lint": "eslint src --ext .ts --fix",
+    "seed": "tsx seeder.ts"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,16 @@
   },
   "homepage": "https://github.com/rodrigofcor/contatinhos-backend#readme",
   "dependencies": {
-    "fastify": "^4.24.3"
+    "@prisma/client": "^5.5.2",
+    "fastify": "^4.24.3",
+    "prisma": "^5.5.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.0",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "eslint": "^8.53.0",
+    "tsx": "^4.1.1",
+    "typescript": "^5.2.2"
   }
 }
