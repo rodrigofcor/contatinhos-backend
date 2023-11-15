@@ -1,13 +1,13 @@
 import fastify from 'fastify'
+import { userRoutes } from './routes/users'
 
-const server = fastify()
+const app = fastify()
 
-server.get('/', () => {
-	return 'Hello world!'
-})
+app.register(userRoutes)
 
-server.listen({
-	port: 3333,
-}).then(() => {
-	console.log('HTTP server running on http://localhost:3333')
-})
+app.
+	listen({
+		port: 3333,
+	}).then(() => {
+		console.log('🚀 server running on http://localhost:3333')
+	})
