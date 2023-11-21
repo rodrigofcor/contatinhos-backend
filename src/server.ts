@@ -1,8 +1,9 @@
 import fastify from 'fastify'
+import multipart from '@fastify/multipart'
 import { userRoutes } from './routes/users'
 
 const app = fastify()
-
+app.register(multipart)
 app.register(userRoutes)
 
 app.

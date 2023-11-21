@@ -2,6 +2,8 @@ import { FastifyInstance } from 'fastify'
 import { prisma } from '../lib/prisma'
 import { z } from 'zod'
 import { isBiggerThanEighteen } from '../helpers/isBiggerThanEighteen'
+import * as fs from 'fs'
+import pump from 'pump'
 
 export async function userRoutes(app: FastifyInstance) {
 	app.get('/users', async (_, reply) => {
@@ -29,14 +31,22 @@ export async function userRoutes(app: FastifyInstance) {
 		})
 
 		if (existingUser) {
-			throw new Error('Este email já está em uso.')
+			return reply.code(400).send({message: 'Este email já está em uso.' })
 		}
 
 		if (!isBiggerThanEighteen(new Date(birthdate))) {
-			throw new Error('É necessário possuir pelo menos 18 anos.')
+			return reply.code(400).send({message: 'É necessário possuir pelo menos 18 anos.' })
 		}
 
 		const user = await prisma.user.create({ data:{ name, email, birthdate, description, password }})
+
+		const files = await request.files()
+
+		for await (const part of files) {
+			const storedFile = fs.createWriteStream(`./storage/${part.filename}`)
+			await pump(part.file, storedFile)
+		}
+
 		return reply.code(201).send({data: user })
 	})
 
