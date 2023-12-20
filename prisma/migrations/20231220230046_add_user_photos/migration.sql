@@ -10,6 +10,8 @@ CREATE TABLE "User" (
     "description" VARCHAR(500),
     "gender" "Gender" NOT NULL,
     "collegeId" TEXT,
+    "courseId" TEXT,
+    "professionId" TEXT,
     "password" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -24,6 +26,22 @@ CREATE TABLE "College" (
     "fullName" TEXT NOT NULL,
 
     CONSTRAINT "College_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Course" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+
+    CONSTRAINT "Course_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Profession" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+
+    CONSTRAINT "Profession_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -53,10 +71,22 @@ CREATE UNIQUE INDEX "College_shortName_key" ON "College"("shortName");
 CREATE UNIQUE INDEX "College_fullName_key" ON "College"("fullName");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Course_name_key" ON "Course"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Profession_name_key" ON "Profession"("name");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Interest_name_key" ON "Interest"("name");
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_collegeId_fkey" FOREIGN KEY ("collegeId") REFERENCES "College"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "User" ADD CONSTRAINT "User_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "Course"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "User" ADD CONSTRAINT "User_professionId_fkey" FOREIGN KEY ("professionId") REFERENCES "Profession"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "UserInterest" ADD CONSTRAINT "UserInterest_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

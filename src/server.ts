@@ -3,8 +3,9 @@ import multipart from '@fastify/multipart'
 import fastifyCors from '@fastify/cors'
 import { userRoutes } from './routes/users'
 import { collegeRoutes } from './routes/colleges'
-import { interestRoutes } from './routes/interests'
 import { coursesRoutes } from './routes/courses'
+import { professionsRoutes } from './routes/professions'
+import { interestRoutes } from './routes/interests'
 
 const app = fastify()
 app.register(multipart)
@@ -15,6 +16,7 @@ app.register(fastifyCors, {
 app.register(userRoutes)
 app.register(collegeRoutes)
 app.register(coursesRoutes)
+app.register(professionsRoutes)
 app.register(interestRoutes)
 
 app.

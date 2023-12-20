@@ -17,20 +17,23 @@ enum Gender {
 }
 
 model User {
-  id          String         @id @default(uuid())
-  name        String
-  email       String         @unique
-  birthdate   DateTime
-  description String?        @db.VarChar(500)
-  gender      Gender
-  College     College?       @relation(fields: [collegeId], references: [id])
-  collegeId   String?
-  Course      Course?        @relation(fields: [courseId], references: [id])
-  courseId    String?
-  interests   UserInterest[]
-  password    String
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  id           String         @id @default(uuid())
+  name         String
+  email        String         @unique
+  birthdate    DateTime
+  description  String?        @db.VarChar(500)
+  gender       Gender
+  College      College?       @relation(fields: [collegeId], references: [id])
+  collegeId    String?
+  Course       Course?        @relation(fields: [courseId], references: [id])
+  courseId     String?
+  Profession   Profession?    @relation(fields: [professionId], references: [id])
+  professionId String?
+  interests    UserInterest[]
+  photos       Photos[]
+  password     String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
 }
 
 model College {
@@ -41,6 +44,12 @@ model College {
 }
 
 model Course {
+  id    String @id @default(uuid())
+  name  String @unique
+  users User[]
+}
+
+model Profession {
   id    String @id @default(uuid())
   name  String @unique
   users User[]
@@ -60,4 +69,12 @@ model UserInterest {
   interestId Int
 
   @@id([userId, interestId])
+}
+
+model Photos {
+  id          String @id @default(uuid())
+  orderNumber Int
+  photoPath   String
+  user        User   @relation(fields: [userId], references: [id])
+  userId      String
 }

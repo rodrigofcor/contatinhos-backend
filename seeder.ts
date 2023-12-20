@@ -108,6 +108,58 @@ async function seedCourses() {
 	console.log('Courses seeded successfully.')
 }
 
+async function seedProfession() {
+	const professionData = [
+		{ name: 'Engenheiro de Software' },
+		{ name: 'Advogado' },
+		{ name: 'Médico' },
+		{ name: 'Arquiteto' },
+		{ name: 'Professor de Matemática' },
+		{ name: 'Designer Gráfico' },
+		{ name: 'Contador' },
+		{ name: 'Enfermeiro' },
+		{ name: 'Analista de Sistemas' },
+		{ name: 'Psicólogo' },
+		{ name: 'Farmacêutico' },
+		{ name: 'Biomédico' },
+		{ name: 'Piloto de Avião' },
+		{ name: 'Engenheiro Civil' },
+		{ name: 'Pintor' },
+		{ name: 'Jornalista' },
+		{ name: 'Cientista de Dados' },
+		{ name: 'Chef de Cozinha' },
+		{ name: 'Astrônomo' },
+		{ name: 'Policial' },
+		{ name: 'Terapeuta Ocupacional' },
+		{ name: 'Geólogo' },
+		{ name: 'Ator' },
+		{ name: 'Economista' },
+		{ name: 'Biólogo' },
+		{ name: 'Dentista' },
+		{ name: 'Engenheiro Elétrico' },
+		{ name: 'Fotógrafo' },
+		{ name: 'Piloto de Helicóptero' },
+		{ name: 'Analista de Marketing' },
+		{ name: 'Tradutor' },
+		{ name: 'Engenheiro Mecânico' },
+		{ name: 'Consultor Financeiro' },
+		{ name: 'Desenvolvedor Front-end' },
+		{ name: 'Artista Plástico' },
+		{ name: 'Assistente Social' },
+		{ name: 'Pescador' },
+		{ name: 'Veterinário' },
+		{ name: 'Piloto de Barco' },
+		{ name: 'Terapeuta Respiratório' },
+		{ name: 'Programador' },
+	]
+
+	for (const profession of professionData) {
+		await prisma.profession.create({ data: profession })
+	}
+
+	console.log('Professions seeded successfully.')
+}
+
 async function seedInterests() {
 	const interestsData = [
 		{ name: 'Programação' },
@@ -151,6 +203,7 @@ async function seedInterests() {
 async function seed() {
 	await seedColleges()
 	await seedCourses()
+	await seedProfession()
 	await seedInterests()
 }
 
