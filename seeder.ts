@@ -44,6 +44,70 @@ async function seedColleges() {
 	console.log('Colleges seeded successfully.')
 }
 
+async function seedCourses() {
+	const coursesData = [
+		{ name: 'Administração de Empresas' },
+		{ name: 'Arquitetura e Urbanismo' },
+		{ name: 'Biologia' },
+		{ name: 'Ciências Biomédicas' },
+		{ name: 'Ciências da Computação' },
+		{ name: 'Direito' },
+		{ name: 'Design Gráfico' },
+		{ name: 'Economia' },
+		{ name: 'Engenharia Civil' },
+		{ name: 'Engenharia de Computação' },
+		{ name: 'Farmácia' },
+		{ name: 'Filosofia' },
+		{ name: 'Física' },
+		{ name: 'Geografia' },
+		{ name: 'História' },
+		{ name: 'Letras' },
+		{ name: 'Matemática' },
+		{ name: 'Medicina' },
+		{ name: 'Nutrição' },
+		{ name: 'Odontologia' },
+		{ name: 'Pedagogia' },
+		{ name: 'Psicologia' },
+		{ name: 'Química' },
+		{ name: 'Radiologia' },
+		{ name: 'Relações Internacionais' },
+		{ name: 'Sociologia' },
+		{ name: 'Teatro' },
+		{ name: 'Turismo' },
+		{ name: 'Zootecnia' },
+		{ name: 'Administração Pública' },
+		{ name: 'Artes Visuais' },
+		{ name: 'Biblioteconomia' },
+		{ name: 'Bioquímica' },
+		{ name: 'Ciência da Informação' },
+		{ name: 'Ciências Contábeis' },
+		{ name: 'Comércio Exterior' },
+		{ name: 'Dança' },
+		{ name: 'Engenharia de Alimentos' },
+		{ name: 'Engenharia Elétrica' },
+		{ name: 'Estatística' },
+		{ name: 'Farmácia Bioquímica' },
+		{ name: 'Fisioterapia' },
+		{ name: 'Gastronomia' },
+		{ name: 'Gestão de Recursos Humanos' },
+		{ name: 'Jornalismo' },
+		{ name: 'Linguística' },
+		{ name: 'Marketing' },
+		{ name: 'Meteorologia' },
+		{ name: 'Música' },
+		{ name: 'Publicidade e Propaganda' },
+		{ name: 'Química Industrial' },
+		{ name: 'Redes de Computadores' },
+		{ name: 'Serviço Social' }
+	]
+
+	for (const course of coursesData) {
+		await prisma.course.create({ data: course })
+	}
+
+	console.log('Courses seeded successfully.')
+}
+
 async function seedInterests() {
 	const interestsData = [
 		{ name: 'Programação' },
@@ -86,6 +150,7 @@ async function seedInterests() {
 
 async function seed() {
 	await seedColleges()
+	await seedCourses()
 	await seedInterests()
 }
 

@@ -8,7 +8,7 @@ import pump from 'pump'
 export async function userRoutes(app: FastifyInstance) {
 	app.get('/users', async (_, reply) => {
 		const users = await prisma.user.findMany()
-		return reply.send({ data: users })
+		return reply.send(users)
 	})
 
 	app.get('/users/:id', async () => {
@@ -47,7 +47,7 @@ export async function userRoutes(app: FastifyInstance) {
 			await pump(part.file, storedFile)
 		}
 
-		return reply.code(201).send({data: user })
+		return reply.code(201).send(user)
 	})
 
 	app.put('/users/:id', async () => {
