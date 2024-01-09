@@ -7,8 +7,13 @@ import { coursesRoutes } from './routes/courses'
 import { professionsRoutes } from './routes/professions'
 import { interestRoutes } from './routes/interests'
 
-const app = fastify()
-app.register(multipart)
+const app = fastify({
+	logger: true
+})
+
+app.register(multipart, {
+	attachFieldsToBody: true,
+})
 app.register(fastifyCors, {
 	origin: 'http://localhost:3000',
 })

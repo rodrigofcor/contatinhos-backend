@@ -27,6 +27,7 @@
     "fastify": "^4.24.3",
     "prisma": "^5.5.2",
     "pump": "^3.0.0",
+    "uuid": "^9.0.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
