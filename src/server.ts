@@ -11,9 +11,7 @@ const app = fastify({
 	logger: true
 })
 
-app.register(multipart, {
-	attachFieldsToBody: true,
-})
+app.register(multipart)
 app.register(fastifyCors, {
 	origin: 'http://localhost:3000',
 })
