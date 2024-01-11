@@ -7,6 +7,29 @@ import pump from 'pump'
 import { v4 as uuidv4 } from 'uuid'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import { IncomingHttpHeaders } from 'http'
+
+const getLoggedUser = async (header: IncomingHttpHeaders) => {
+	const { authorization } = header
+
+	if (!authorization) {
+		return
+	}
+
+	const token = authorization.split(' ')[1]
+
+	const { id } = jwt.verify(token, process.env.JWT_PASS)
+
+	const user = await prisma.user.findUnique({
+		where: { id },
+	})
+
+	if (!user) {
+		return
+	}
+
+	return user
+}
 
 export async function userRoutes(app: FastifyInstance) {
 	app.get('/users', async (_, reply) => {
@@ -122,7 +145,7 @@ export async function userRoutes(app: FastifyInstance) {
 
 	app.post('/login', async (request, reply) => {
 		try {
-			const { email, receivedPassword } = request.body
+			const { email, pass } = request.body as { email: string; pass: string }
 
 			const user = await prisma.user.findUnique({
 				where: { email },
@@ -132,7 +155,7 @@ export async function userRoutes(app: FastifyInstance) {
 				return reply.code(400).send({ message: 'E-mail inválido.' })
 			}
 
-			const passwordMatch = await bcrypt.compare(receivedPassword, user.password)
+			const passwordMatch = await bcrypt.compare(pass, user.password)
 
 			if (!passwordMatch) {
 				return reply.code(401).send({ message: 'E-mail ou senha inválidos.' })
@@ -140,6 +163,7 @@ export async function userRoutes(app: FastifyInstance) {
 
 			const token = jwt.sign({ id: user.id }, process.env.JWT_PASS, { expiresIn: '1d'})
 
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			const { password: _, ...userLogin } = user
 
 			return reply.send({
@@ -151,9 +175,24 @@ export async function userRoutes(app: FastifyInstance) {
 		}
 	})
 
+	app.put('/users/:id', async (request, reply) => {
+		const user = await getLoggedUser(request.headers)
 
-	app.put('/users/:id', async () => {
+		if (!user) {
+			return reply.code(401).send({ message: 'Token inválido ou não informado.' })
+		}
 
+		const { id } = request.params as { id: string }
+
+		if (!id) {
+			return reply.code(401).send({ message: 'Usuário não informado.' })
+		}
+
+		if (id !== user.id) {
+			return reply.code(403).send({ message: 'Não é permitido editar outro usuário.' })
+		}
+
+		return reply.send(user)
 	})
 
 	app.delete('/users/:id', async () => {
