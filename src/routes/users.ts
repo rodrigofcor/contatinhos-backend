@@ -145,7 +145,7 @@ export async function userRoutes(app: FastifyInstance) {
 
 	app.post('/login', async (request, reply) => {
 		try {
-			const { email, pass } = request.body as { email: string; pass: string }
+			const { email, password } = request.body as { email: string; password: string }
 
 			const user = await prisma.user.findUnique({
 				where: { email },
@@ -155,7 +155,7 @@ export async function userRoutes(app: FastifyInstance) {
 				return reply.code(400).send({ message: 'E-mail inválido.' })
 			}
 
-			const passwordMatch = await bcrypt.compare(pass, user.password)
+			const passwordMatch = await bcrypt.compare(password, user.password)
 
 			if (!passwordMatch) {
 				return reply.code(401).send({ message: 'E-mail ou senha inválidos.' })
