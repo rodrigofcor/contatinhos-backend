@@ -13,7 +13,7 @@ const app = fastify({
 
 app.register(multipart)
 app.register(fastifyCors, {
-	origin: 'http://localhost:3000',
+	origin: process.env.FRONTEND_BASE_URL,
 })
 
 app.register(userRoutes)

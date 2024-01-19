@@ -55,44 +55,50 @@ export async function userRoutes(app: FastifyInstance) {
 			password: z.string().min(6)
 		})
 
-		const data = bodySchema.parse(request.body)
+		try {
+			const data = bodySchema.parse(request.body)
 
-		const existingUser = await prisma.user.findUnique({
-			where: { email: data.email },
-		})
-
-		if(existingUser) {
-			return reply.code(400).send({ message: 'Este email já está em uso.' })
-		}
-
-		if(!isBiggerThanEighteen(new Date(data.birthdate))) {
-			return reply.code(400).send({ message: 'É necessário possuir pelo menos 18 anos.' })
-		}
-
-		const user = await prisma.user.create({
-			data: {
-				name: data.name,
-				email: data.email,
-				gender: data.gender,
-				birthdate: data.birthdate,
-				collegeId: data.collegeId !== '' ? data.collegeId : null,
-				courseId: data.courseId !== '' ? data.courseId : null,
-				professionId: data.professionId !== '' ? data.professionId : null,
-				password: await bcrypt.hash(data.password, 10),
-				description: data.description,
-			},
-		})
-
-		data.interestIds.map(async(id) => {
-			await prisma.userInterest.create({
-				data: {
-					userId: user.id,
-					interestId: parseInt(id)
-				}
+			const existingUser = await prisma.user.findUnique({
+				where: { email: data.email },
 			})
-		})
 
-		return reply.code(201).send(user.id)
+			if(existingUser) {
+				return reply.code(400).send({ message: 'Este email já está em uso.' })
+			}
+
+			if(!isBiggerThanEighteen(new Date(data.birthdate))) {
+				return reply.code(400).send({ message: 'É necessário possuir pelo menos 18 anos.' })
+			}
+
+			const user = await prisma.user.create({
+				data: {
+					name: data.name,
+					email: data.email,
+					gender: data.gender,
+					birthdate: data.birthdate,
+					collegeId: data.collegeId !== '' ? data.collegeId : null,
+					courseId: data.courseId !== '' ? data.courseId : null,
+					professionId: data.professionId !== '' ? data.professionId : null,
+					password: await bcrypt.hash(data.password, 10),
+					description: data.description,
+				},
+			})
+
+			data.interestIds.map(async(id) => {
+				await prisma.userInterest.create({
+					data: {
+						userId: user.id,
+						interestId: parseInt(id)
+					}
+				})
+			})
+
+			return reply.code(201).send(user.id)
+
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch(e: any) {
+			return reply.code(400).send(e.message)
+		}
 	})
 
 	app.put('/users/:id/images', async (request) => {
